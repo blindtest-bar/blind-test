@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Blind Test – QR Code</title>
+  <style>
+    body {
+      background: #000;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 4em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 2em;
+      margin-bottom: 30px;
+    }
+
+    img {
+      width: 350px;
+      height: 350px;
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+    }
+
+    .url {
+      margin-top: 30px;
+      font-size: 1.5em;
+      color: #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎶 BLIND TEST 🎶</h1>
+  <p>Scannez pour jouer</p>
+
+  <img
+    src="https://api.qrserver.com/v1/create-qr-code/?size=350x350&data=http://localhost:3000"
+    alt="QR Code"
+  >
+
+  <div class="url">
+    http://localhost:3000
+  </div>
+
+</body>
+</html>

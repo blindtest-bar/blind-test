@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Blind Test</title>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+
+<div id="login">
+  <h2>Entre ton prénom</h2>
+  <input id="name" placeholder="Prénom">
+  <button onclick="join()">Rejoindre</button>
+</div>
+
+<div id="game" style="display:none;">
+  <h2>Joueur : <span id="playerName"></span></h2>
+  <button onclick="buzz()">🔴 BUZZ</button>
+</div>
+
+<script>
+  const socket = io();
+  let playerName = "";
+
+  function join() {
+    playerName = document.getElementById("name").value;
+    if (!playerName) return alert("Entre ton prénom");
+
+    document.getElementById("login").style.display = "none";
+    document.getElementById("game").style.display = "block";
+    document.getElementById("playerName").innerText = playerName;
+  }
+
+ function buzz() {
+  console.log("BUZZ CLIQUÉ :", playerName);
+  socket.emit("buzz", playerName);
+}
+
+</script>
+
+</body>
+</html>
