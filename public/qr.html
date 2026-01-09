@@ -1,55 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Blind Test – QR Code</title>
+  <meta charset="UTF-8" />
+  <title>QR Blind Test</title>
   <style>
+    @page {
+      size: 9cm 9cm;
+      margin: 0;
+    }
+
     body {
-      background: #000;
-      color: white;
+      width: 9cm;
+      height: 9cm;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       font-family: Arial, sans-serif;
       text-align: center;
-      padding: 40px;
     }
 
     h1 {
-      font-size: 4em;
-      margin-bottom: 20px;
-    }
-
-    p {
-      font-size: 2em;
-      margin-bottom: 30px;
+      font-size: 14px;
+      margin: 4px 0;
     }
 
     img {
-      width: 350px;
-      height: 350px;
-      background: white;
-      padding: 20px;
-      border-radius: 20px;
+      width: 6.5cm;
+      height: 6.5cm;
     }
 
-    .url {
-      margin-top: 30px;
-      font-size: 1.5em;
-      color: #ccc;
+    p {
+      font-size: 12px;
+      margin: 4px 0;
     }
   </style>
 </head>
-
 <body>
 
-  <h1>🎶 BLIND TEST 🎶</h1>
+  <h1>🎵 BLIND TEST 🎵</h1>
+
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://blind-test-1.onrender.com" />
+
   <p>Scanne & buzze !</p>
-
-  <img
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://blind-test-1.onrender.com" />    alt="QR Code"
-  >
-
-  <div class="url">
-    http://localhost:3000
-  </div>
 
 </body>
 </html>
