@@ -71,19 +71,41 @@
       }
     }
      button {
-  font-size: 1.5em;
-  padding: 15px 30px;
-  margin-bottom: 40px;
-  border: none;
-  border-radius: 10px;
-  background: #ff0055;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1em;
+  padding: 10px 15px;
+  background: #ff0033;
   color: white;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 0 15px #ff0055;
+  opacity: 0.7;
 }
+
 button:hover {
-  background: #ff3366;
+  opacity: 1;
 }
+.reset-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 1em;
+  padding: 10px 15px;
+  background: #ff0033;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 0.6;
+  z-index: 9999;
+}
+
+.reset-btn:hover {
+  opacity: 1;
+}
+
   </style>
  
 
@@ -95,7 +117,7 @@ button:hover {
 
   <h1>🎶 BLIND TEST 🎶</h1>
   <h2>Ordre des buzz</h2>
-<button onclick="resetBuzz()">🔁 RESET</button>
+<button class="reset-btn" onclick="resetBuzz()">🔄</button>
 
   <ol id="buzzList"></ol>
 
