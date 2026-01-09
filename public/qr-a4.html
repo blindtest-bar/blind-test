@@ -7,8 +7,9 @@
 <style>
 @page {
   size: A4;
-  margin: 1cm;
+  margin: 0.8cm;
 }
+
 
 body {
   margin: 0;
@@ -19,9 +20,11 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 9cm);
   grid-template-rows: repeat(3, 9cm);
-  gap: 1cm;
+  gap: 0.8cm;                 /* 🔧 légèrement réduit */
   justify-content: center;
+  align-content: start;       /* 🔒 empêche le décalage vertical */
 }
+
 
 .qr-card {
   width: 9cm;
