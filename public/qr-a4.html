@@ -34,11 +34,12 @@ body {
   text-align: center;
   padding: 0.3cm;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .logo {
-  max-width: 3.5cm;
-  max-height: 1.8cm;
+  max-width: 2.6cm;
+  max-height: 1.2cm;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -46,15 +47,23 @@ body {
 
 
 .title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+
+  background: linear-gradient(90deg, #00c853, #009624);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  margin: 0.1cm 0;
 }
 
 .qr {
-  width: 4.3cm;
-  height: 4.3cm;
+  width: 4.6cm;
+  height: 4.6cm;
 }
+
 
 .text {
   font-size: 15px;
