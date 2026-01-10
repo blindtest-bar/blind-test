@@ -17,14 +17,16 @@ body {
 }
 
 .sheet {
-  display: grid;
-  grid-template-columns: repeat(2, 9cm);
-  grid-template-rows: repeat(3, 9cm);
-  gap: 0.8cm;                 /* 🔧 légèrement réduit */
-  justify-content: center;
-  align-content: start;       /* 🔒 empêche le décalage vertical */
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0.8cm;
 }
 
+.sheet td {
+  width: 9cm;
+  height: 9cm;
+  vertical-align: top;
+}
 
 .qr-card {
   width: 9cm;
@@ -80,51 +82,22 @@ text-shadow: 1px 1px 0 #5d4037, 2px 2px 0 #000;
 
 <body>
 
-<div class="sheet">
+<table class="sheet">
+  <tr>
+    <td><div class="qr-card">...</div></td>
+    <td><div class="qr-card">...</div></td>
+  </tr>
+  <tr>
+    <td><div class="qr-card">...</div></td>
+    <td><div class="qr-card">...</div></td>
+  </tr>
+  <tr>
+    <td><div class="qr-card">...</div></td>
+    <td><div class="qr-card">...</div></td>
+  </tr>
+</table>
 
-  <!-- DUPLIQUÉ 6 FOIS -->
-  <div class="qr-card">
-    <img src="/logo.png" class="logo" alt="Logo société">
-    <div class="title">BLIND TEST</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-    <div class="text">Scanne & Buzz</div>
-  </div>
 
-  <div class="qr-card">
-    <img src="/logo.png" class="logo" alt="Logo société">
-    <div class="title">BLIND TEST</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-    <div class="text">Scanne & Buzz</div>
-  </div>
-
-  <div class="qr-card">
-    <img src="/logo.png" class="logo" alt="Logo société">
-    <div class="title">BLIND TEST</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-    <div class="text">Scanne & Buzz</div>
-  </div>
-
-  <div class="qr-card">
-    <img src="/logo.png" class="logo" alt="Logo société">
-    <div class="title">BLIND TEST</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-    <div class="text">Scanne & Buzz</div>
-  </div>
-
-  <div class="qr-card">
-     <img src="/logo.png" class="logo" alt="Logo société"    <div class="title">BLIND TEST</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-    <div class="text">Scanne & Buzz</div>
-  </div>
-
-  <div class="qr-card">
-    <img src="/logo.png" class="logo" alt="Logo société">
-    <div class="title">BLIND TEST</div>
-    <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-    <div class="text">Scanne & Buzz</div>
-  </div>
-
-</div>
 
 </body>
 </html>
