@@ -1,145 +1,132 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Blind Test – Écran DJ</title>
-  <script src="/socket.io/socket.io.js"></script>
+<meta charset="UTF-8">
+<title>DJ – Blind Test</title>
+<script src="/socket.io/socket.io.js"></script>
 
-  <style>
-    body {
-      background: radial-gradient(circle at top, #111, #000);
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 40px;
-    }
+<style>
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #1b5e20, #000);
+  color: #f4f1ea;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
 
-    h1 {
-      font-size: 4em;
-      color: #ff0055;
-      margin-bottom: 10px;
-      text-shadow: 0 0 20px #ff0055;
-    }
+/* TITRE */
+h1 {
+  margin: 20px 0;
+  font-size: 48px;
+  letter-spacing: 6px;
+  text-shadow: 2px 2px 0 #000;
+}
 
-    h2 {
-      font-size: 2em;
-      margin-bottom: 40px;
-      color: #ccc;
-    }
+/* PREMIER BUZZ */
+#winner {
+  margin-top: 40px;
+  font-size: 96px;
+  font-weight: 900;
+  color: #ffd54f;
+  text-shadow:
+    3px 3px 0 #000,
+    0 0 20px #ffd54f;
+  animation: pop 0.4s ease-out;
+}
 
-    ol {
-      list-style: none;
-      padding: 0;
-      max-width: 600px;
-      margin: auto;
-    }
+/* ANIMATION */
+@keyframes pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 
-    li {
-      font-size: 3em;
-      margin: 20px 0;
-      padding: 20px;
-      border-radius: 15px;
-      background: linear-gradient(135deg, #222, #111);
-      box-shadow: 0 0 20px rgba(255, 0, 85, 0.3);
-      animation: pop 0.4s ease;
-    }
+/* LISTE (OPTIONNEL) */
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+  font-size: 32px;
+}
 
-    li:nth-child(1) {
-      background: linear-gradient(135deg, gold, #b8860b);
-      color: #000;
-      box-shadow: 0 0 30px gold;
-    }
+li {
+  margin: 10px 0;
+  opacity: 0.8;
+}
 
-    li:nth-child(2) {
-      background: linear-gradient(135deg, silver, #aaa);
-      color: #000;
-    }
-
-    li:nth-child(3) {
-      background: linear-gradient(135deg, #cd7f32, #8b5a2b);
-      color: #000;
-    }
-
-    @keyframes pop {
-      from {
-        transform: scale(0.7);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-     button {
+/* BOUTON RESET */
+#reset {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-size: 1em;
-  padding: 10px 15px;
-  background: #ff0033;
-  color: white;
+  bottom: 30px;
+  right: 30px;
+  font-size: 28px;
+  padding: 20px 40px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  opacity: 0.7;
-}
-
-button:hover {
-  opacity: 1;
-}
-.reset-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  font-size: 1em;
-  padding: 10px 15px;
-  background: #ff0033;
+  border-radius: 12px;
+  background: #b71c1c;
   color: white;
-  border: none;
-  border-radius: 8px;
+  font-weight: bold;
   cursor: pointer;
-  opacity: 0.6;
-  z-index: 9999;
+  box-shadow: 0 4px 0 #000;
 }
 
-.reset-btn:hover {
-  opacity: 1;
+#reset:hover {
+  background: #d32f2f;
 }
 
-  </style>
- 
-
-
-
+#reset:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #000;
+}
+</style>
 </head>
 
 <body>
 
-  <h1>🎶 BLIND TEST 🎶</h1>
-  <h2>Ordre des buzz</h2>
-<button class="reset-btn" onclick="resetBuzz()">🔄</button>
+<h1>BLIND TEST</h1>
 
-  <ol id="buzzList"></ol>
+<div id="winner">EN ATTENTE…</div>
 
-  <script>
-    const socket = io();
+<ul id="list"></ul>
 
-    socket.on("buzzUpdate", (list) => {
-      const ol = document.getElementById("buzzList");
-      ol.innerHTML = "";
+<button id="reset" onclick="resetBuzz()">RESET</button>
 
-      list.forEach((name) => {
-        const li = document.createElement("li");
-        li.textContent = name;
-        ol.appendChild(li);
-      });
-    });
-    function resetBuzz() {
-  socket.emit("reset");
+<script>
+const socket = io();
+
+socket.on("buzzList", (list) => {
+  const winnerDiv = document.getElementById("winner");
+  const ul = document.getElementById("list");
+
+  ul.innerHTML = "";
+
+  if (list.length === 0) {
+    winnerDiv.innerText = "EN ATTENTE…";
+    return;
+  }
+
+  // Premier buzz
+  winnerDiv.innerText = list[0];
+
+  // Autres buzz (si un jour activés)
+  list.slice(1).forEach(name => {
+    const li = document.createElement("li");
+    li.innerText = name;
+    ul.appendChild(li);
+  });
+});
+
+function resetBuzz() {
+  if (confirm("Reset le buzz ?")) {
+    socket.emit("reset");
+  }
 }
-
-  </script>
+</script>
 
 </body>
 </html>
-
