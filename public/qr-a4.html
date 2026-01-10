@@ -15,11 +15,15 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* TABLE A4 STABLE */
+/* TABLE A4 STABLE – 2 COLONNES x 3 LIGNES */
 .sheet {
-  width: 100%;
+  margin: 0 auto;
   border-collapse: separate;
-  border-spacing: 0.8cm;
+  border-spacing: 0.6cm;
+}
+
+.sheet tr {
+  white-space: nowrap; /* empêche le retour à la ligne */
 }
 
 .sheet td {
@@ -53,7 +57,7 @@ body {
   object-fit: contain;
 }
 
-/* TITRE IRISH PUB */
+/* TITRE – AMBIANCE IRISH PUB */
 .title {
   font-size: 22px;
   font-weight: 900;
@@ -68,7 +72,7 @@ body {
   margin: 0.15cm 0;
 }
 
-/* QR */
+/* QR CODE (PRIORITAIRE POUR LE SCAN) */
 .qr {
   width: 4.6cm;
   height: 4.6cm;
@@ -91,4 +95,57 @@ body {
         <img src="/logo.png" class="logo" alt="Logo">
         <div class="title">BLIND TEST</div>
         <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
-        <div class
+        <div class="text">Scanne & Buzz</div>
+      </div>
+    </td>
+    <td>
+      <div class="qr-card">
+        <img src="/logo.png" class="logo" alt="Logo">
+        <div class="title">BLIND TEST</div>
+        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
+        <div class="text">Scanne & Buzz</div>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <div class="qr-card">
+        <img src="/logo.png" class="logo" alt="Logo">
+        <div class="title">BLIND TEST</div>
+        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
+        <div class="text">Scanne & Buzz</div>
+      </div>
+    </td>
+    <td>
+      <div class="qr-card">
+        <img src="/logo.png" class="logo" alt="Logo">
+        <div class="title">BLIND TEST</div>
+        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
+        <div class="text">Scanne & Buzz</div>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <div class="qr-card">
+        <img src="/logo.png" class="logo" alt="Logo">
+        <div class="title">BLIND TEST</div>
+        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
+        <div class="text">Scanne & Buzz</div>
+      </div>
+    </td>
+    <td>
+      <div class="qr-card">
+        <img src="/logo.png" class="logo" alt="Logo">
+        <div class="title">BLIND TEST</div>
+        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
+        <div class="text">Scanne & Buzz</div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>
