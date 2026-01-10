@@ -10,12 +10,12 @@
   margin: 0.8cm;
 }
 
-
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
+/* TABLE A4 STABLE */
 .sheet {
   width: 100%;
   border-collapse: separate;
@@ -28,53 +28,55 @@ body {
   vertical-align: top;
 }
 
+/* CARTE 9x9 */
 .qr-card {
   width: 9cm;
   height: 9cm;
+  box-sizing: border-box;
   border: 1px dashed #ccc;
+  padding: 0.25cm;
+  overflow: hidden;
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
   text-align: center;
-  padding: 0.3cm;
-  box-sizing: border-box;
-  overflow: hidden;
 }
 
+/* LOGO */
 .logo {
-  max-width: 3.6cm;   /* plus visible */
+  max-width: 3.6cm;
   max-height: 1.8cm;
   width: auto;
   height: auto;
   object-fit: contain;
 }
 
-
-
-
+/* TITRE IRISH PUB */
 .title {
   font-size: 22px;
   font-weight: 900;
   letter-spacing: 3px;
   text-transform: uppercase;
 
-color: #f5e6c8;
-text-shadow: 1px 1px 0 #5d4037, 2px 2px 0 #000;
-
+  color: #f4f1ea;
+  text-shadow:
+    1px 1px 0 #1b5e20,
+    2px 2px 0 #000;
 
   margin: 0.15cm 0;
 }
 
-
+/* QR */
 .qr {
   width: 4.6cm;
   height: 4.6cm;
 }
 
-
+/* TEXTE */
 .text {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
 }
 </style>
@@ -84,20 +86,9 @@ text-shadow: 1px 1px 0 #5d4037, 2px 2px 0 #000;
 
 <table class="sheet">
   <tr>
-    <td><div class="qr-card">...</div></td>
-    <td><div class="qr-card">...</div></td>
-  </tr>
-  <tr>
-    <td><div class="qr-card">...</div></td>
-    <td><div class="qr-card">...</div></td>
-  </tr>
-  <tr>
-    <td><div class="qr-card">...</div></td>
-    <td><div class="qr-card">...</div></td>
-  </tr>
-</table>
-
-
-
-</body>
-</html>
+    <td>
+      <div class="qr-card">
+        <img src="/logo.png" class="logo" alt="Logo">
+        <div class="title">BLIND TEST</div>
+        <img class="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https://blind-test-1.onrender.com">
+        <div class
