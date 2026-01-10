@@ -1,39 +1,43 @@
 const express = require("express");
-const app = express();
-const http = require("http").createServer(app);
-const io = require("socket.io")(http);
+const http = require("http");
+const { Server } = require("socket.io");
 
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+const PORT = process.env.PORT || 3000;
+
+// fichiers statiques (pages HTML)
 app.use(express.static("public"));
 
-let buzzList = [];
+// joueurs ayant buzzé
 let buzzedPlayers = [];
+let buzzLocked = false;
 
+// réception d’un buzz
 io.on("connection", (socket) => {
-  console.log("Un client connecté");
+  console.log("Un joueur connecté");
 
-  // 🔁 Synchronisation à la connexion
-  socket.emit("buzzUpdate", buzzList);
+  socket.on("buzz", (playerName) => {
+    if (buzzLocked) return;
 
-  // 🔴 Buzz
-  socket.on("buzz", (name) => {
-    if (buzzedPlayers.includes(name)) {
-      return; // 🚫 déjà buzzé
-    }
+    buzzLocked = true;
+    buzzedPlayers.push(playerName);
 
-    buzzedPlayers.push(name);
-    buzzList.push(name);
-
-    io.emit("buzzUpdate", buzzList);
+    io.emit("buzzed", buzzedPlayers);
+    console.log("Buzz reçu de :", playerName);
   });
 
-  // 🔁 RESET DJ
   socket.on("reset", () => {
-    buzzList = [];
     buzzedPlayers = [];
-    io.emit("buzzUpdate", buzzList);
+    buzzLocked = false;
+    io.emit("reset");
+    console.log("Buzz reset par le DJ");
   });
 });
 
-http.listen(3000, () => {
-  console.log("Serveur blind test OK");
+// lancement du serveur
+server.listen(PORT, () => {
+  console.log("Serveur blind test OK sur le port", PORT);
 });

@@ -1,42 +1,209 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Blind Test</title>
+
+  <!-- MOBILE FIRST -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
   <script src="/socket.io/socket.io.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, #050505, #111);
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    }
+
+    .container {
+      min-height: 100vh;
+      padding: 28px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin-top: 16px;
+      font-size: 2.4rem;
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    #nameInput {
+      margin-top: 32px;
+      margin-bottom: 56px;
+      width: 100%;
+      max-width: 320px;
+      padding: 16px;
+      font-size: 1.2rem;
+      border-radius: 14px;
+      border: none;
+      text-align: center;
+    }
+
+    #buzzBtn {
+      width: 88vw;
+      max-width: 340px;
+      height: 88vw;
+      max-height: 340px;
+      border-radius: 50%;
+      border: none;
+      font-size: 3.2rem;
+      font-weight: 900;
+      background: radial-gradient(circle at top, #ff4d4d, #a80000);
+      color: white;
+      box-shadow:
+        0 0 0 0 rgba(255, 60, 60, 0.6),
+        0 18px 45px rgba(255, 0, 0, 0.6);
+      cursor: pointer;
+      animation: pulse 2s infinite;
+      margin: auto 0;
+      transform: translateY(50px);
+    }
+
+    #buzzBtn:active {
+      transform: translateY(50px) scale(0.95);
+      animation: none;
+    }
+
+    #buzzBtn.disabled {
+      background: #444;
+      box-shadow: none;
+      animation: none;
+    }
+
+    .message {
+      margin-top: 24px;
+      font-size: 1.6rem;
+      min-height: 1.6em;
+      text-align: center;
+    }
+
+    .win { color: #00ff99; }
+    .lose { color: #ff6b6b; }
+
+    /* BUZZ pulse */
+    @keyframes pulse {
+      0% {
+        box-shadow:
+          0 0 0 0 rgba(255, 60, 60, 0.6),
+          0 18px 45px rgba(255, 0, 0, 0.6);
+      }
+      70% {
+        box-shadow:
+          0 0 0 22px rgba(255, 60, 60, 0),
+          0 18px 45px rgba(255, 0, 0, 0.6);
+      }
+      100% {
+        box-shadow:
+          0 0 0 0 rgba(255, 60, 60, 0),
+          0 18px 45px rgba(255, 0, 0, 0.6);
+      }
+    }
+
+    /* LOGO */
+    .logo-wrapper {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      animation: spin 20s linear infinite;
+      pointer-events: none;
+    }
+
+    .logo {
+      width: 170px;
+      opacity: 0.7;
+      filter: brightness(0) invert(1)
+              drop-shadow(0 0 8px rgba(255,255,255,0.25));
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="container">
+    <h1>🎵 BLIND TEST 🎵</h1>
+    <input id="nameInput" placeholder="Ton prénom" />
 
-<div id="login">
-  <h2>Entre ton prénom</h2>
-  <input id="name" placeholder="Prénom">
-  <button onclick="join()">Rejoindre</button>
-</div>
+    <button id="buzzBtn">BUZZ</button>
 
-<div id="game" style="display:none;">
-  <h2>Joueur : <span id="playerName"></span></h2>
-  <button onclick="buzz()">🔴 BUZZ</button>
-</div>
+    <div class="message" id="message"></div>
+  </div>
 
-<script>
-  const socket = io();
-  let playerName = "";
+  <!-- LOGO -->
+  <div class="logo-wrapper">
+    <img src="/logo.png" class="logo" alt="Logo">
+  </div>
 
-  function join() {
-    playerName = document.getElementById("name").value;
-    if (!playerName) return alert("Entre ton prénom");
+  <!-- AUDIO -->
+  <audio id="buzzSound" src="/buzz.mp3" preload="auto"></audio>
 
-    document.getElementById("login").style.display = "none";
-    document.getElementById("game").style.display = "block";
-    document.getElementById("playerName").innerText = playerName;
-  }
+  <script>
+    const socket = io();
 
- function buzz() {
-  console.log("BUZZ CLIQUÉ :", playerName);
-  socket.emit("buzz", playerName);
-}
+    const nameInput = document.getElementById("nameInput");
+    const buzzBtn = document.getElementById("buzzBtn");
+    const message = document.getElementById("message");
+    const buzzSound = document.getElementById("buzzSound");
+    // BUZZ désactivé sans prénom
+    buzzBtn.disabled = true;
+    buzzBtn.classList.add("disabled");
 
-</script>
+    nameInput.addEventListener("input", () => {
+      const ok = nameInput.value.trim().length > 0;
+      buzzBtn.disabled = !ok;
+      buzzBtn.classList.toggle("disabled", !ok);
+    });
 
+    buzzBtn.addEventListener("touchstart", buzz, { passive: true });
+    buzzBtn.addEventListener("click", buzz);
+
+    function buzz() {
+      if (!nameInput.value.trim()) return;
+
+      buzzBtn.disabled = true;
+      buzzBtn.classList.add("disabled");
+
+      if (buzzSound) {
+        buzzSound.currentTime = 0;
+        buzzSound.play().catch(() => {});
+      }
+
+      if (navigator.vibrate) navigator.vibrate(50);
+
+      socket.emit("buzz", nameInput.value.trim());
+    }
+
+socket.on("buzzed", (players) => {
+      if (players[0] === nameInput.value.trim()) {
+        message.textContent = "🎉 PREMIER !";
+        message.className = "message win";
+      } else {
+        message.textContent = "⏱️ Trop tard";
+        message.className = "message lose";
+      }
+    });
+
+    socket.on("reset", () => {
+      buzzBtn.disabled = false;
+      buzzBtn.classList.remove("disabled");
+      message.textContent = "";
+    });
+  </script>
 </body>
 </html>
