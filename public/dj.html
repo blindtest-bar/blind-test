@@ -14,7 +14,6 @@ body {
   text-align: center;
 }
 
-/* TITRE */
 h1 {
   margin: 20px 0;
   font-size: 48px;
@@ -22,22 +21,24 @@ h1 {
   text-shadow: 2px 2px 0 #000;
 }
 
-/* PREMIER BUZZ */
 #winner {
-  margin-top: 40px;
-  font-size: 96px;
+  margin-top: 60px;
+  font-size: 100px;
   font-weight: 900;
   color: #ffd54f;
   text-shadow:
     3px 3px 0 #000,
     0 0 20px #ffd54f;
+}
+
+/* animation buzz */
+.buzzed {
   animation: pop 0.4s ease-out;
 }
 
-/* ANIMATION */
 @keyframes pop {
   from {
-    transform: scale(0.7);
+    transform: scale(0.6);
     opacity: 0;
   }
   to {
@@ -46,20 +47,6 @@ h1 {
   }
 }
 
-/* LISTE (OPTIONNEL) */
-ul {
-  list-style: none;
-  padding: 0;
-  margin-top: 30px;
-  font-size: 32px;
-}
-
-li {
-  margin: 10px 0;
-  opacity: 0.8;
-}
-
-/* BOUTON RESET */
 #reset {
   position: fixed;
   bottom: 30px;
@@ -78,11 +65,6 @@ li {
 #reset:hover {
   background: #d32f2f;
 }
-
-#reset:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #000;
-}
 </style>
 </head>
 
@@ -92,33 +74,26 @@ li {
 
 <div id="winner">EN ATTENTE…</div>
 
-<ul id="list"></ul>
-
 <button id="reset" onclick="resetBuzz()">RESET</button>
 
 <script>
 const socket = io();
+const winnerDiv = document.getElementById("winner");
 
 socket.on("buzzList", (list) => {
-  const winnerDiv = document.getElementById("winner");
-  const ul = document.getElementById("list");
-
-  ul.innerHTML = "";
+  console.log("Buzz reçu côté DJ :", list);
 
   if (list.length === 0) {
     winnerDiv.innerText = "EN ATTENTE…";
     return;
   }
 
-  // Premier buzz
-  winnerDiv.innerText = list[0];
+  // reset animation
+  winnerDiv.classList.remove("buzzed");
+  void winnerDiv.offsetWidth; // force reflow
 
-  // Autres buzz (si un jour activés)
-  list.slice(1).forEach(name => {
-    const li = document.createElement("li");
-    li.innerText = name;
-    ul.appendChild(li);
-  });
+  winnerDiv.innerText = list[0];
+  winnerDiv.classList.add("buzzed");
 });
 
 function resetBuzz() {
