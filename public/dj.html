@@ -2,35 +2,59 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>DJ DEBUG</title>
+<title>DJ Blind Test</title>
 <script src="/socket.io/socket.io.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: black;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  margin-top: 20px;
+  font-size: 48px;
+}
+
+#list {
+  list-style: none;
+  padding: 0;
+  margin-top: 40px;
+  font-size: 40px;
+}
+
+#reset {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 20px;
+  padding: 15px 25px;
+}
+</style>
 </head>
 
 <body>
 
-<h1>DJ DEBUG</h1>
-<div id="status">Connexion...</div>
-<div id="winner">Aucun buzz</div>
-<button onclick="resetBuzz()">RESET</button>
+<h1>BUZZ</h1>
+
+<ul id="list"></ul>
+
+<button id="reset" onclick="resetBuzz()">RESET</button>
 
 <script>
 const socket = io();
 
-const status = document.getElementById("status");
-const winner = document.getElementById("winner");
-
-socket.on("connect", () => {
-  status.innerText = "Socket connecté ✅";
-});
-
 socket.on("buzzList", (list) => {
-  console.log("buzzList reçu :", list);
+  const ul = document.getElementById("list");
+  ul.innerHTML = "";
 
-  if (list.length === 0) {
-    winner.innerText = "Aucun buzz";
-  } else {
-    winner.innerText = list[0];
-  }
+  list.forEach(name => {
+    const li = document.createElement("li");
+    li.innerText = name;
+    ul.appendChild(li);
+  });
 });
 
 function resetBuzz() {
