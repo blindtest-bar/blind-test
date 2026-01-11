@@ -2,104 +2,39 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>DJ – Blind Test</title>
+<title>DJ DEBUG</title>
 <script src="/socket.io/socket.io.js"></script>
-
-<style>
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, #1b5e20, #000);
-  color: #f4f1ea;
-  font-family: Arial, sans-serif;
-  text-align: center;
-}
-
-h1 {
-  margin: 20px 0;
-  font-size: 48px;
-  letter-spacing: 6px;
-  text-shadow: 2px 2px 0 #000;
-}
-
-#winner {
-  margin-top: 60px;
-  font-size: 100px;
-  font-weight: 900;
-  color: #ffd54f;
-  text-shadow:
-    3px 3px 0 #000,
-    0 0 20px #ffd54f;
-}
-
-/* animation buzz */
-.buzzed {
-  animation: pop 0.4s ease-out;
-}
-
-@keyframes pop {
-  from {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-#reset {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  font-size: 28px;
-  padding: 20px 40px;
-  border: none;
-  border-radius: 12px;
-  background: #b71c1c;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 0 #000;
-}
-
-#reset:hover {
-  background: #d32f2f;
-}
-</style>
 </head>
 
 <body>
 
-<h1>BLIND TEST</h1>
-
-<div id="winner">EN ATTENTE…</div>
-
-<button id="reset" onclick="resetBuzz()">RESET</button>
+<h1>DJ DEBUG</h1>
+<div id="status">Connexion...</div>
+<div id="winner">Aucun buzz</div>
+<button onclick="resetBuzz()">RESET</button>
 
 <script>
 const socket = io();
-const winnerDiv = document.getElementById("winner");
+
+const status = document.getElementById("status");
+const winner = document.getElementById("winner");
+
+socket.on("connect", () => {
+  status.innerText = "Socket connecté ✅";
+});
 
 socket.on("buzzList", (list) => {
-  console.log("Buzz reçu côté DJ :", list);
+  console.log("buzzList reçu :", list);
 
   if (list.length === 0) {
-    winnerDiv.innerText = "EN ATTENTE…";
-    return;
+    winner.innerText = "Aucun buzz";
+  } else {
+    winner.innerText = list[0];
   }
-
-  // reset animation
-  winnerDiv.classList.remove("buzzed");
-  void winnerDiv.offsetWidth; // force reflow
-
-  winnerDiv.innerText = list[0];
-  winnerDiv.classList.add("buzzed");
 });
 
 function resetBuzz() {
-  if (confirm("Reset le buzz ?")) {
-    socket.emit("reset");
-  }
+  socket.emit("reset");
 }
 </script>
 
