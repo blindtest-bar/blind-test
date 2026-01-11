@@ -8,36 +8,38 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
-// fichiers statiques (pages HTML)
+// fichiers statiques
 app.use(express.static("public"));
 
-// joueurs ayant buzzé
+// état du jeu
 let buzzedPlayers = [];
 let buzzLocked = false;
 
-// réception d’un buzz
 io.on("connection", (socket) => {
   console.log("Un joueur connecté");
 
+  // envoyer l’état actuel au nouvel arrivant
+  socket.emit("buzzUpdate", buzzedPlayers);
+
   socket.on("buzz", (playerName) => {
     if (buzzLocked) return;
+    if (!playerName) return;
 
     buzzLocked = true;
     buzzedPlayers.push(playerName);
 
-    io.emit("buzzed", buzzedPlayers);
+    io.emit("buzzUpdate", buzzedPlayers);
     console.log("Buzz reçu de :", playerName);
   });
 
   socket.on("reset", () => {
     buzzedPlayers = [];
     buzzLocked = false;
-    io.emit("reset");
+    io.emit("buzzUpdate", buzzedPlayers);
     console.log("Buzz reset par le DJ");
   });
 });
 
-// lancement du serveur
 server.listen(PORT, () => {
   console.log("Serveur blind test OK sur le port", PORT);
 });
