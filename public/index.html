@@ -156,57 +156,65 @@
   <!-- AUDIO -->
   <audio id="buzzSound" src="/buzz.mp3" preload="auto"></audio>
 
-  <script>
-    const socket = io();
+<script>
+  const socket = io();
 
-    const nameInput = document.getElementById("nameInput");
-    const buzzBtn = document.getElementById("buzzBtn");
-    const message = document.getElementById("message");
-    const buzzSound = document.getElementById("buzzSound");
-    // BUZZ désactivé sans prénom
+  const nameInput = document.getElementById("nameInput");
+  const buzzBtn = document.getElementById("buzzBtn");
+  const message = document.getElementById("message");
+  const buzzSound = document.getElementById("buzzSound");
+
+  // BUZZ désactivé sans prénom
+  buzzBtn.disabled = true;
+  buzzBtn.classList.add("disabled");
+
+  nameInput.addEventListener("input", () => {
+    const ok = nameInput.value.trim().length > 0;
+    buzzBtn.disabled = !ok;
+    buzzBtn.classList.toggle("disabled", !ok);
+  });
+
+  buzzBtn.addEventListener("touchstart", buzz, { passive: true });
+  buzzBtn.addEventListener("click", buzz);
+
+  function buzz() {
+    const name = nameInput.value.trim();
+    if (!name) return;
+
     buzzBtn.disabled = true;
     buzzBtn.classList.add("disabled");
 
-    nameInput.addEventListener("input", () => {
-      const ok = nameInput.value.trim().length > 0;
-      buzzBtn.disabled = !ok;
-      buzzBtn.classList.toggle("disabled", !ok);
-    });
-
-    buzzBtn.addEventListener("touchstart", buzz, { passive: true });
-    buzzBtn.addEventListener("click", buzz);
-
-    function buzz() {
-      if (!nameInput.value.trim()) return;
-
-      buzzBtn.disabled = true;
-      buzzBtn.classList.add("disabled");
-
-      if (buzzSound) {
-        buzzSound.currentTime = 0;
-        buzzSound.play().catch(() => {});
-      }
-
-      if (navigator.vibrate) navigator.vibrate(50);
-
-      socket.emit("buzz", nameInput.value.trim());
+    if (buzzSound) {
+      buzzSound.currentTime = 0;
+      buzzSound.play().catch(() => {});
     }
 
-socket.on("buzzed", (players) => {
-      if (players[0] === nameInput.value.trim()) {
-        message.textContent = "🎉 PREMIER !";
-        message.className = "message win";
-      } else {
-        message.textContent = "⏱️ Trop tard";
-        message.className = "message lose";
-      }
-    });
+    if (navigator.vibrate) navigator.vibrate(50);
 
-    socket.on("reset", () => {
+    socket.emit("buzz", name);
+  }
+
+  // 🔥 ÉVÉNEMENT UNIQUE ET SYNCHRO AVEC LE SERVEUR
+  socket.on("buzzUpdate", (players) => {
+    if (!players.length) return;
+
+    if (players[0] === nameInput.value.trim()) {
+      message.textContent = "🎉 PREMIER !";
+      message.className = "message win";
+    } else {
+      message.textContent = "⏱️ Trop tard";
+      message.className = "message lose";
+    }
+  });
+
+  socket.on("buzzUpdate", (players) => {
+    if (players.length === 0) {
       buzzBtn.disabled = false;
       buzzBtn.classList.remove("disabled");
       message.textContent = "";
-    });
-  </script>
+    }
+  });
+</script>
+
 </body>
 </html>
