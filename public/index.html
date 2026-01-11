@@ -25,13 +25,15 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     }
 
-    .container {
-      min-height: 100vh;
-      padding: 28px 20px 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+.container {
+  position: fixed;
+  inset: 0;
+  padding: 28px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 
     h1 {
       margin-top: 16px;
@@ -68,10 +70,9 @@
         0 18px 45px rgba(255, 0, 0, 0.6);
       cursor: pointer;
       animation: pulse 2s infinite;
-      margin: auto 0;
-      transform: translateY(50px);
+      margin: 32px 0;
+
       
-      margin-top: -60px;
 
     }
 
@@ -87,15 +88,15 @@
     }
 
 .message {
-  position: fixed;
-  top: 120px;
-  left: 0;
-  width: 100%;
-  text-align: center;
+  margin-top: 24px;        /* espace sous le bouton */
+  min-height: 3.2rem;      /* réserve la place → pas de scroll */
   font-size: 2.2rem;
-  font-weight: bold;
-  z-index: 999;
+  font-weight: 900;
+  text-align: center;
+  pointer-events: none;
 }
+
+
 
 
     .win { color: #00ff99; }
@@ -146,7 +147,7 @@
 <body>
   <div class="container">
     <h1>🎵 BLIND TEST 🎵</h1>
-    <input id="nameInput" placeholder="Ton prénom" />
+    <input id="nameInput" placeholder="Prénom / Equipe" />
 
     <button id="buzzBtn">BUZZ</button>
 
