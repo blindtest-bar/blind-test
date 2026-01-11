@@ -86,12 +86,17 @@
       animation: none;
     }
 
-    .message {
-      margin-top: 24px;
-      font-size: 1.6rem;
-      min-height: 1.6em;
-      text-align: center;
-    }
+.message {
+  position: fixed;
+  top: 120px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: bold;
+  z-index: 999;
+}
+
 
     .win { color: #00ff99; }
     .lose { color: #ff6b6b; }
@@ -195,25 +200,39 @@
   }
 
   // 🔥 ÉVÉNEMENT UNIQUE ET SYNCHRO AVEC LE SERVEUR
-  socket.on("buzzUpdate", (players) => {
-    if (!players.length) return;
+socket.on("buzzUpdate", (players) => {
+  if (!players.length) return;
 
-    if (players[0] === nameInput.value.trim()) {
-      message.textContent = "🎉 PREMIER !";
-      message.className = "message win";
-    } else {
-      message.textContent = "⏱️ Trop tard";
-      message.className = "message lose";
-    }
-  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (players[0] === nameInput.value.trim()) {
+    message.textContent = "🎉 PREMIER !";
+    message.className = "message win";
+  } else {
+    message.textContent = "⏱️ Trop tard";
+    message.className = "message lose";
+  }
+});
+
 
   socket.on("buzzUpdate", (players) => {
-    if (players.length === 0) {
-      buzzBtn.disabled = false;
-      buzzBtn.classList.remove("disabled");
-      message.textContent = "";
-    }
-  });
+
+  if (players.length === 0) {
+    buzzBtn.disabled = false;
+    buzzBtn.classList.remove("disabled");
+    message.textContent = "";
+    return;
+  }
+
+  if (players[0] === nameInput.value.trim()) {
+    message.textContent = "🎉 PREMIER !";
+    message.className = "message win";
+  } else {
+    message.textContent = "⏱️ Trop tard";
+    message.className = "message lose";
+  }
+});
+
 </script>
 
 </body>
